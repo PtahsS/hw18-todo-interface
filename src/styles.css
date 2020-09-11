@@ -41,3 +41,11 @@ form {
 	text-align: left;
 	width: 200px;
 }
+
+.checked {
+	text-decoration: line-through;
+}
+
+.hide {
+	display: none;
+}

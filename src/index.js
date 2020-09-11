@@ -2,6 +2,7 @@ class List {
 		token;
 		notes;
 		baseUrl = 'https://todo.hillel.it';
+		showChecked = true;
 
 		constructor(userLogin) {
 			this.userLogin = userLogin;
@@ -40,6 +41,7 @@ class List {
 				console.log('Init is done');
 				console.log(this.notes)
 				this.createNoteList();
+				this.eventListener();
 			})
 		}
 
@@ -55,6 +57,11 @@ class List {
 
 					const p = document.createElement('p');
 					p.classList.add('value');
+					if (note.checked === true) {
+						p.classList.add('checked')
+					} else {
+						p.classList.remove('checked')
+					}
 					p.innerHTML = `id: ${note._id}, name: ${note.value.name}, content: ${note.value.content}, checked: ${note.checked}`;
 					listItem.append(p);
 
@@ -68,6 +75,38 @@ class List {
 					removeButton.appendChild(document.createTextNode('Удалить задачу'))
 					listItem.append(removeButton)
 				})
+		}
+
+		eventListener(){
+			const $removeNote = document.querySelectorAll(".remove-button");
+			for (let i = 0; i < $removeNote.length; i++) {
+				$removeNote[i].addEventListener('click', function(e) {
+					e.preventDefault()
+					this.closest('.list-item').remove();
+				})
+			};
+
+			const $toggleNote = document.querySelectorAll(".toggle-button");
+			for (let i = 0; i < $toggleNote.length; i++) {
+				$toggleNote[i].addEventListener('click', function(e) {
+					e.preventDefault()
+					let val = this.closest('.list-item').querySelector('.value').innerHTML;
+					todo.toggleNote(parseInt(val.match(/\d+/)))
+				})
+			};
+
+			const toggleChecked = document.querySelector('.toggle-checked');
+			toggleChecked.addEventListener('click', function() {
+				this.checked = !this.checked;
+				
+						let checked = document.querySelectorAll('.checked');
+						for (let item of checked) {
+							item.closest('.list-item').classList.add('hide');
+						}
+
+				
+
+			})
 		}
 
 		get showNotes(){
@@ -217,27 +256,29 @@ class List {
 		const inputText = document.querySelector('.input').value.split(', ');
 		console.log(inputText)
 		todo.addNote(inputText[0], inputText[1]);
+		document.querySelector('.input').value = '';
 	})
 
 	
 
 setTimeout(()=> {
-	const $removeNote = document.querySelectorAll(".remove-button");
-	console.log('removeNote: ', $removeNote)
-	for (let i = 0; i < $removeNote.length; i++) {
-		$removeNote[i].addEventListener('click', function(e) {
-			e.preventDefault()
-			this.closest('.list-item').remove();
-		})
-	};
+	// const $removeNote = document.querySelectorAll(".remove-button");
+	// console.log('removeNote: ', $removeNote)
+	// for (let i = 0; i < $removeNote.length; i++) {
+	// 	$removeNote[i].addEventListener('click', function(e) {
+	// 		e.preventDefault()
+	// 		this.closest('.list-item').remove();
+	// 	})
+	// };
 
-	const $toggleNote = document.querySelectorAll(".toggle-button");
-	console.log('toggleNote: ', $toggleNote)
-	for (let i = 0; i < $toggleNote.length; i++) {
-		$toggleNote[i].addEventListener('click', function(e) {
-			e.preventDefault()
-			this.closest('.list-item').querySelector('.value').style.textDecoration = 'line-through';
-		})
-	};
+	// const $toggleNote = document.querySelectorAll(".toggle-button");
+	// console.log('toggleNote: ', $toggleNote)
+	// for (let i = 0; i < $toggleNote.length; i++) {
+	// 	$toggleNote[i].addEventListener('click', function(e) {
+	// 		e.preventDefault()
+	// 		let val = this.closest('.list-item').querySelector('.value').innerHTML;
+	// 		todo.toggleNote(parseInt(val.match(/\d+/)))
+	// 	})
+	// };
 	
 }, 1000)
