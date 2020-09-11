@@ -53,6 +53,8 @@ class List {
 
 					const listItem = document.createElement('div');
 					listItem.className = 'list-item';
+					listItem.dataset.id = note._id;
+					listItem.dataset.checked = note.checked;
 					noteList.append(listItem);
 
 					const p = document.createElement('p');
@@ -62,7 +64,7 @@ class List {
 					} else {
 						p.classList.remove('checked')
 					}
-					p.innerHTML = `id: ${note._id}, name: ${note.value.name}, content: ${note.value.content}, checked: ${note.checked}`;
+					p.innerHTML = `name: ${note.value.name}, content: ${note.value.content}, id: ${note._id}, checked: ${note.checked}`;
 					listItem.append(p);
 
 					const toggleButton = document.createElement('button');
@@ -78,57 +80,55 @@ class List {
 		}
 
 		eventListener(){
+
+			const $addNote = document.querySelector('.add-note');
+				$addNote.addEventListener('click', function(e){
+					e.preventDefault();
+					const inputText = document.querySelector('.input').value.split(', ');
+					console.log(inputText)
+					todo.addNote(inputText[0], inputText[1]);
+					document.querySelector('.input').value = '';
+				})
+
+			// Удалить заметку
 			const $removeNote = document.querySelectorAll(".remove-button");
 			for (let i = 0; i < $removeNote.length; i++) {
 				$removeNote[i].addEventListener('click', function(e) {
 					e.preventDefault()
+					let val = this.closest('.list-item').querySelector('.value').innerHTML;
+					todo.removeNote(parseInt(val.match(/\d+/)))
 					this.closest('.list-item').remove();
 				})
 			};
 
+			// Отметить заметку как выполненную
 			const $toggleNote = document.querySelectorAll(".toggle-button");
 			for (let i = 0; i < $toggleNote.length; i++) {
 				$toggleNote[i].addEventListener('click', function(e) {
 					e.preventDefault()
 					let val = this.closest('.list-item').querySelector('.value').innerHTML;
-					todo.toggleNote(parseInt(val.match(/\d+/)))
+					const res = todo.toggleNote(parseInt(val.match(/\d+/)))
 				})
 			};
 
+			// Спрятать/показать выполненные заметки
 			const toggleChecked = document.querySelector('.toggle-checked');
 			toggleChecked.addEventListener('click', function() {
 				this.checked = !this.checked;
-				
-						let checked = document.querySelectorAll('.checked');
-						for (let item of checked) {
-							item.closest('.list-item').classList.add('hide');
-						}
+				toggleChecked.innerHTML = this.checked ? 'Показать выделенные' : 'Спрятать выделенные';
+				let checked = document.querySelectorAll('.checked');
+
+				for (let item of checked) {
+					if (this.checked) {
+						item.closest('.list-item').classList.add('hide');
+					} else {
+						item.closest('.list-item').classList.remove('hide');
+					}
+				}
 
 				
 
 			})
-		}
-
-		get showNotes(){
-			const array = this.notes.reduce((acc, note) => {
-				if(!acc) {
-					acc = [];
-				}
-				const arr = {
-					id: note._id,
-					name: note.value.name,
-					content: note.value.content,
-					priority: note.priority,
-					checked: note.checked,
-					addedAt: note.addedAt,
-				};
-				acc.push(arr)
-				return acc;
-			}, [])
-			for (let i in array) {
-				console.log(array[i])
-			}
-			
 		}
 
 		addNote(name, content, priority=1) {
@@ -230,6 +230,7 @@ class List {
 				console.log(response.status)
 				if (response.status >=200 && response.status <=210) {
 					console.log('toggled')
+					console.log(this)
 				}
 				this.init()
 			})
@@ -250,35 +251,14 @@ class List {
 
 	const todo = new TodoList('ptahs');
 
-	const $addNote = document.querySelector('.add-note');
-	$addNote.addEventListener('click', function(e){
-		e.preventDefault();
-		const inputText = document.querySelector('.input').value.split(', ');
-		console.log(inputText)
-		todo.addNote(inputText[0], inputText[1]);
-		document.querySelector('.input').value = '';
-	})
+	// const $addNote = document.querySelector('.add-note');
+	// $addNote.addEventListener('click', function(e){
+	// 	e.preventDefault();
+	// 	const inputText = document.querySelector('.input').value.split(', ');
+	// 	console.log(inputText)
+	// 	todo.addNote(inputText[0], inputText[1]);
+	// 	document.querySelector('.input').value = '';
+	// })
 
 	
 
-setTimeout(()=> {
-	// const $removeNote = document.querySelectorAll(".remove-button");
-	// console.log('removeNote: ', $removeNote)
-	// for (let i = 0; i < $removeNote.length; i++) {
-	// 	$removeNote[i].addEventListener('click', function(e) {
-	// 		e.preventDefault()
-	// 		this.closest('.list-item').remove();
-	// 	})
-	// };
-
-	// const $toggleNote = document.querySelectorAll(".toggle-button");
-	// console.log('toggleNote: ', $toggleNote)
-	// for (let i = 0; i < $toggleNote.length; i++) {
-	// 	$toggleNote[i].addEventListener('click', function(e) {
-	// 		e.preventDefault()
-	// 		let val = this.closest('.list-item').querySelector('.value').innerHTML;
-	// 		todo.toggleNote(parseInt(val.match(/\d+/)))
-	// 	})
-	// };
-	
-}, 1000)
