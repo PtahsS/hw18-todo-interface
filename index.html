@@ -4,18 +4,17 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
+	<link rel="stylesheet" href="src/styles.css">
 </head>
 <body>
 	<h1>Todo List</h1>
 	<form action="">
 		<label for="input-text">Введите название города и действие через запятую</label>
 		<input type="text" id="input-text" class="input" placeholder="Odessa, swimming">
-		<button type="button" class="add-note">Добавить заметку</button>
+		<button type="submit" class="add-note">Добавить заметку</button>
 		<button type="button" class="toggle-checked">Спрятать выполненные</button>
-		<div class="noteList"></div>
-
-
 	</form>
+		<div class="note-list"></div>
 	<script src="src/index.js"></script>
 </body>
 </html>

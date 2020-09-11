@@ -1,0 +1,43 @@
+body {
+	background-color: #eff
+}
+
+h1 {
+	text-align: center;
+}
+
+form {
+	padding-bottom: 30px;
+	text-align: center;
+}
+
+#input-text {
+	margin-right: 30px;
+}
+
+.add-note {
+	margin-right: 30px;
+}
+
+.note-list {
+	text-align: center;
+}
+
+.value {
+	display: inline-block;
+	width: 450px;
+	text-align: left;
+}
+
+.cancel-button {
+	display: inline-block;
+	width: 300px;
+	text-align: left;
+	margin-right: 30px;
+}
+
+.removeButton {
+	display: inline-block;
+	text-align: left;
+	width: 200px;
+}

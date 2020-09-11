@@ -44,22 +44,29 @@ class List {
 		}
 
 		createNoteList(){
-			const noteList = document.querySelector('.noteList');
+			const noteList = document.querySelector('.note-list');
 				noteList.innerHTML = '';
-				this.notes.forEach(note => {
-					const p = document.createElement('p');
-					p.innerHTML = `id: ${note._id}, name: ${note.value.name}, content: ${note.value.content}, checked: ${note.checked}`;
-					noteList.append(p);
 
-					const cancelButton = document.createElement('button');
-					cancelButton.id = "cancel-button";
-					cancelButton.appendChild(document.createTextNode('Отметить задачу как выполненную'))
-					p.append(cancelButton)
+				this.notes.forEach(note => {
+
+					const listItem = document.createElement('div');
+					listItem.className = 'list-item';
+					noteList.append(listItem);
+
+					const p = document.createElement('p');
+					p.classList.add('value');
+					p.innerHTML = `id: ${note._id}, name: ${note.value.name}, content: ${note.value.content}, checked: ${note.checked}`;
+					listItem.append(p);
+
+					const toggleButton = document.createElement('button');
+					toggleButton.className = "toggle-button";
+					toggleButton.appendChild(document.createTextNode('Отметить задачу как выполненную'))
+					listItem.append(toggleButton)
 
 					const removeButton = document.createElement('button');
-					removeButton.id = "remove-button"
+					removeButton.className = "remove-button";
 					removeButton.appendChild(document.createTextNode('Удалить задачу'))
-					p.append(removeButton)
+					listItem.append(removeButton)
 				})
 		}
 
@@ -205,25 +212,32 @@ class List {
 	const todo = new TodoList('ptahs');
 
 	const $addNote = document.querySelector('.add-note');
-	$addNote.addEventListener('click', function(){
+	$addNote.addEventListener('click', function(e){
+		e.preventDefault();
 		const inputText = document.querySelector('.input').value.split(', ');
 		console.log(inputText)
 		todo.addNote(inputText[0], inputText[1]);
 	})
 
-	const $removeNote = document.querySelectorAll("#remove-button");
-	console.log('removeNote: ', $removeNote)
-	for (let i = 0; i < $removeNote.length; i++) {
-		$removeNote[i].addEventListener('click', function(e) {
-			console.log('qqq')
-		})
-	}
 	
 
-	setTimeout(()=>{const $removeNote = document.querySelectorAll("#remove-button");
+setTimeout(()=> {
+	const $removeNote = document.querySelectorAll(".remove-button");
 	console.log('removeNote: ', $removeNote)
 	for (let i = 0; i < $removeNote.length; i++) {
 		$removeNote[i].addEventListener('click', function(e) {
-			console.log('qqq')
+			e.preventDefault()
+			this.closest('.list-item').remove();
 		})
-	}}, 500)
+	};
+
+	const $toggleNote = document.querySelectorAll(".toggle-button");
+	console.log('toggleNote: ', $toggleNote)
+	for (let i = 0; i < $toggleNote.length; i++) {
+		$toggleNote[i].addEventListener('click', function(e) {
+			e.preventDefault()
+			this.closest('.list-item').querySelector('.value').style.textDecoration = 'line-through';
+		})
+	};
+	
+}, 1000)
