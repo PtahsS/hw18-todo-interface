@@ -64,7 +64,7 @@ class List {
 					} else {
 						p.classList.remove('checked')
 					}
-					p.innerHTML = `name: ${note.value.name}, content: ${note.value.content}, id: ${note._id}, checked: ${note.checked}`;
+					p.innerHTML = `${note.value.name}, let's ${note.value.content}`;
 					listItem.append(p);
 
 					const toggleButton = document.createElement('button');
@@ -95,8 +95,9 @@ class List {
 			for (let i = 0; i < $removeNote.length; i++) {
 				$removeNote[i].addEventListener('click', function(e) {
 					e.preventDefault()
-					let val = this.closest('.list-item').querySelector('.value').innerHTML;
-					todo.removeNote(parseInt(val.match(/\d+/)))
+					const id =  this.closest('.list-item').getAttribute('data-id');
+					console.log(id)
+					todo.removeNote(id)
 					this.closest('.list-item').remove();
 				})
 			};
@@ -106,8 +107,8 @@ class List {
 			for (let i = 0; i < $toggleNote.length; i++) {
 				$toggleNote[i].addEventListener('click', function(e) {
 					e.preventDefault()
-					let val = this.closest('.list-item').querySelector('.value').innerHTML;
-					const res = todo.toggleNote(parseInt(val.match(/\d+/)))
+					const id =  this.closest('.list-item').getAttribute('data-id');
+					const res = todo.toggleNote(id)
 				})
 			};
 
@@ -116,12 +117,14 @@ class List {
 			toggleChecked.addEventListener('click', function() {
 				this.checked = !this.checked;
 				toggleChecked.innerHTML = this.checked ? 'Показать выделенные' : 'Спрятать выделенные';
-				let checked = document.querySelectorAll('.checked');
-
-				for (let item of checked) {
-					if (this.checked) {
+				let checkedNotes = document.querySelectorAll('[data-checked]');
+				console.log(checkedNotes)
+				for (let item of checkedNotes) {
+					
+					if (item.getAttribute('data-checked') === 'true' && this.checked) {
 						item.closest('.list-item').classList.add('hide');
 					} else {
+						console.log('1')
 						item.closest('.list-item').classList.remove('hide');
 					}
 				}
