@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-	<link rel="stylesheet" href="src/styles.css">
-</head>
-<body>
-	<h1>Todo List</h1>
-	<form action="">
-		<label for="input-text">Введите название города и действие через запятую</label>
-		<input type="text" id="input-text" class="input" placeholder="Odessa, swimming">
-		<button type="submit" class="add-note">Добавить заметку</button>
-		<button type="button" class="toggle-checked">Спрятать выполненные</button>
-	</form>
-		<div class="note-list"></div>
-	<script src="src/index.js"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <title>Todo App</title>
+
+    <link rel="stylesheet" href="src/style.css" />
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script src="src/model.js"></script>
+    <script src="src/view.js"></script>
+    <script src="src/controller.js"></script>
+    <script src="src/app.js"></script>
+  </body>
 </html>
